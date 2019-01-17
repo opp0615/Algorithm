@@ -8,6 +8,7 @@
 using namespace std;
 
 
+//역트리
 /*
 class Node {
 public:
@@ -118,11 +119,11 @@ int FindMax(Node* object,int index)
 	return max;
 		
 }
-
 */
 
- 
 
+//트리
+ /*
 int main()
 {
 	int T = 0;
@@ -209,6 +210,138 @@ int main()
 	return 0;
 }
 
+*/
+
+
+//야매 Fail
+/*
+class Node {
+public:
+	int buildTime;
+	int needTimeMax;
+	Node();
+	void SetNeedTime(int time);
+	int GetTotalTime();
+};
+
+int main()
+{
+	int T = 0;
+	Node* object = NULL;
+	cin >> T;
+
+	for (int i = 0; i < T; i++)
+	{
+
+		int N = 0, K = 0;
+
+		cin >> N >> K;
+
+		object = new Node[N + 1];
+
+		for (int j = 0; j < N; j++)
+		{
+			int time = 0;
+			cin >> time;
+			object[j + 1].buildTime = time;
+		}
+
+		for (int j = 0; j < K; j++)
+		{
+			int buildA = 0, buildB = 0;
+
+			cin >> buildA >> buildB;
+
+			object[buildB].SetNeedTime(object[buildA].GetTotalTime());
+
+
+		}
+
+
+
+
+		//victory
+		int W = 0;
+		cin >> W;
+
+		cout << object[W].GetTotalTime()<<"\n";
+
+
+		delete[] object;
+
+	}
+
+
+
+	return 0;
+}
+
+Node::Node()
+{
+	buildTime = 0;
+	needTimeMax = 0;
+}
+
+void Node::SetNeedTime(int time)
+{
+	if (time > needTimeMax)
+		needTimeMax = time;
+}
+
+int Node::GetTotalTime()
+{
+	return this->buildTime + this->needTimeMax;
+}
+
+*/
+
+
+int main()
+{
+	int T = 0;
+	
+	cin >> T;
+
+	for (int i = 0; i < T; i++)
+	{
+
+		int N = 0, K = 0;
+
+		cin >> N >> K;
+		vector<vector<int>> object;
+
+		int* buildTimes = new int[N + 1];
+
+		for (int j = 0; j < N; j++)
+		{
+			int time = 0;
+			cin >> time;
+		}
+
+		for (int j = 0; j < K; j++)
+		{
+			int buildA = 0, buildB = 0;
+
+			cin >> buildA >> buildB;
+
+
+
+		}
+
+		 
+
+
+		//victory
+		int W = 0;
+		cin >> W;
+
+
+	}
+
+
+
+	return 0;
+}
 
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
