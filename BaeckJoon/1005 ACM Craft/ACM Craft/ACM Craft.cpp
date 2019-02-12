@@ -4,6 +4,7 @@
 #include "pch.h"
 #include <iostream>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
@@ -213,7 +214,7 @@ int main()
 */
 
 
-//야매 Fail
+//야매 
 /*
 class Node {
 public:
@@ -295,6 +296,8 @@ int Node::GetTotalTime()
 
 */
 
+//위상정렬
+
 
 int main()
 {
@@ -308,14 +311,16 @@ int main()
 		int N = 0, K = 0;
 
 		cin >> N >> K;
-		vector<vector<int>> object;
+		vector<int> object[1001];
 
-		int* buildTimes = new int[N + 1];
+		//indegree 자신에게 들어오는 간선의 수
+		int buildTimes[1001],indegree[1001];
 
 		for (int j = 0; j < N; j++)
 		{
 			int time = 0;
 			cin >> time;
+			buildTimes[j + 1] = time;
 		}
 
 		for (int j = 0; j < K; j++)
@@ -324,17 +329,44 @@ int main()
 
 			cin >> buildA >> buildB;
 
-
+			object[buildA].push_back(buildB);
+			indegree[buildB]++;
 
 		}
 
-		 
+		//건물짓는 최소시간
+		int minBuildTime[1001] = { 0 };
+		queue<int> Q;
 
+		for (int j = 0; i < N; i++)
+		{
+			//선행자가 없는 노드 큐에 추가
+			if (indegree[i] == 0)
+				Q.push(i);
+		}
 
 		//victory
 		int W = 0;
 		cin >> W;
 
+		//목표건물의 선행자가 없어질때까지
+		while (indegree[W] > 0)
+		{
+			int u = Q.front();
+			Q.pop();
+
+			for (int j = 0; j < object[u].size(); j++)
+			{
+				int next = object[u][j];
+				minBuildTime[next] = max(minBuildTime[next], minBuildTime[u] + buildTimes[u]);
+				indegree[next]--;
+				if (indegree[next] == 0)
+					Q.push(next);
+			}
+
+		}
+
+		cout << minBuildTime[W] + buildTimes[W]<<"\n";
 
 	}
 
