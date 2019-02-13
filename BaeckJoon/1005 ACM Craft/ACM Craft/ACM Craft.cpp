@@ -314,7 +314,7 @@ int main()
 		vector<int> object[1001];
 
 		//indegree 자신에게 들어오는 간선의 수
-		int buildTimes[1001],indegree[1001];
+		int buildTimes[1001], indegree[1001] = {0};
 
 		for (int j = 0; j < N; j++)
 		{
@@ -338,11 +338,11 @@ int main()
 		int minBuildTime[1001] = { 0 };
 		queue<int> Q;
 
-		for (int j = 0; i < N; i++)
+		for (int j = 1; j < N+1; j++)
 		{
 			//선행자가 없는 노드 큐에 추가
-			if (indegree[i] == 0)
-				Q.push(i);
+			if (indegree[j] == 0)
+				Q.push(j);
 		}
 
 		//victory
@@ -358,6 +358,7 @@ int main()
 			for (int j = 0; j < object[u].size(); j++)
 			{
 				int next = object[u][j];
+				//건물을 짓기 위해서는 부모노드의 최소 건설시간과 자신의 건설시간이 필요하다.
 				minBuildTime[next] = max(minBuildTime[next], minBuildTime[u] + buildTimes[u]);
 				indegree[next]--;
 				if (indegree[next] == 0)
