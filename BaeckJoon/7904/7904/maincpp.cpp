@@ -1,7 +1,9 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
+int CheckDigit(int index,int pre, int Z, int N);
 
 int main()
 {
@@ -16,12 +18,37 @@ int main()
 		cin >> Z;
 		//허프만 트리의 arity
 		cin >> N;
+		int digit = 0;
+		digit = CheckDigit(1 ,1 ,Z, N);
 
+		cout << digit << "\n";
+
+		string encoding ;
+
+		cin >> encoding;
 
 	}
 
 
 	return 0;
+}
+
+int CheckDigit(int index, int pre, int Z, int N)
+{
+	int next = pre + N^index;
+	if (Z <= next)
+	{
+		return index;
+	}
+	else
+	{
+		index++;
+		index = CheckDigit(index, next, Z, N);
+		return index;
+	}
+
+	return -1;
+
 }
 
 
