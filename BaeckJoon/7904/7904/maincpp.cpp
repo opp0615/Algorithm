@@ -4,6 +4,7 @@
 using namespace std;
 
 int CheckDigit(int index,int pre, int Z, int N);
+void FindDigitHafman(string encodingTotal, int original, int digit);
 
 int main()
 {
@@ -18,15 +19,27 @@ int main()
 		cin >> Z;
 		//허프만 트리의 arity
 		cin >> N;
-		int digit = 0;
-		digit = CheckDigit(1 ,1 ,Z, N);
 
-		cout << digit << "\n";
+		//최대 글자 수
+		int maxdigit = 0;
+		maxdigit = CheckDigit(1 ,1 ,Z, N);
 
-		string encoding ;
 
-		cin >> encoding;
+		string encodingTotal ;
 
+		cin >> encodingTotal;
+
+		for (int j = 0; j < maxdigit; j++)
+		{
+
+			FindDigitHafman(encodingTotal, 0, j+1);
+		}
+
+		/*
+		cout << FindDigitHafman(encodingTotal, 0, 1) << "\n";
+		cout << FindDigitHafman(encodingTotal, 1, 1) << "\n";
+		cout << FindDigitHafman(encodingTotal, 2, 1) << "\n";
+		*/
 	}
 
 
@@ -48,6 +61,30 @@ int CheckDigit(int index, int pre, int Z, int N)
 	}
 
 	return -1;
+
+}
+
+void FindDigitHafman(string encodingTotal, int original, int digit)
+{
+	cout << original <<" : ";
+	for (int i = 0; i < digit; i++)
+	{
+		cout << encodingTotal[i];
+	}
+	cout << "\n";
+
+	string subEncoding = encodingTotal.substr(digit, encodingTotal.length() - digit);
+
+	if (original == 1) {
+
+		cout << original + 1 << " : " << subEncoding<<"\n";
+		return;
+	}
+
+
+
+	for(int i=0;i<2;i++)
+		FindDigitHafman(subEncoding, original + 1, i+1);
 
 }
 
