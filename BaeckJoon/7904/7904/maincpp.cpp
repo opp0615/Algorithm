@@ -3,8 +3,13 @@
 
 using namespace std;
 
-int CheckDigit(int index,int pre, int Z, int N);
+int CheckDigit(int index,int pre);
 void FindDigitHafman(string encodingTotal, int original, int digit);
+bool CheckMakeSence();
+
+int Z = 0, N = 0;
+int maxDigit = 0;
+string encodedResult[20];
 
 int main()
 {
@@ -13,7 +18,7 @@ int main()
 	cin >> T;
 	for (int i = 0; i < T; i++)
 	{
-		int Z = 0, N = 0;
+		
 
 		//파일에 들어있는 서로 다른 글자의 개수
 		cin >> Z;
@@ -21,19 +26,14 @@ int main()
 		cin >> N;
 
 		//최대 글자 수
-		int maxdigit = 0;
-		maxdigit = CheckDigit(1 ,1 ,Z, N);
+		maxDigit = CheckDigit(1 ,1);
 
 
 		string encodingTotal ;
 
 		cin >> encodingTotal;
 
-		for (int j = 0; j < maxdigit; j++)
-		{
-
-			FindDigitHafman(encodingTotal, 0, j+1);
-		}
+		FindDigitHafman(encodingTotal, 0, 1);
 
 		/*
 		cout << FindDigitHafman(encodingTotal, 0, 1) << "\n";
@@ -46,7 +46,7 @@ int main()
 	return 0;
 }
 
-int CheckDigit(int index, int pre, int Z, int N)
+int CheckDigit(int index, int pre)
 {
 	int next = pre + N^index;
 	if (Z <= next)
@@ -56,7 +56,7 @@ int CheckDigit(int index, int pre, int Z, int N)
 	else
 	{
 		index++;
-		index = CheckDigit(index, next, Z, N);
+		index = CheckDigit(index, next);
 		return index;
 	}
 
@@ -66,26 +66,62 @@ int CheckDigit(int index, int pre, int Z, int N)
 
 void FindDigitHafman(string encodingTotal, int original, int digit)
 {
-	cout << original <<" : ";
-	for (int i = 0; i < digit; i++)
+	if (original == Z - 1)
 	{
-		cout << encodingTotal[i];
-	}
-	cout << "\n";
+		encodedResult[original] = encodingTotal;
+		
+		for (int i = 0; i < Z; i++)
+		{
+			cout << encodedResult[i]<<", ";
+		}
 
-	string subEncoding = encodingTotal.substr(digit, encodingTotal.length() - digit);
+		cout << "\n";
 
-	if (original == 1) {
+		bool isok = CheckMakeSence();
 
-		cout << original + 1 << " : " << subEncoding<<"\n";
+		cout << "Make Senece : " << isok << "\n";
+
 		return;
 	}
 
 
+	for (int i = 0; i < maxDigit; i++)
+	{
 
-	for(int i=0;i<2;i++)
-		FindDigitHafman(subEncoding, original + 1, i+1);
+		string encodingTemp;
 
+		//글자 수만큼 뽑아내기
+		for (int j = 0; j < digit; j++)
+		{
+			encodingTemp += encodingTotal[j];
+		}
+
+		encodedResult[original] = encodingTemp;
+
+		//나머지 문자열
+		string subEncoding = encodingTotal.substr(digit, encodingTotal.length() - digit);
+
+
+		FindDigitHafman(subEncoding, original + 1, 1);
+
+		digit++;
+
+	}
+
+}
+
+bool CheckMakeSence()
+{
+	for(int i=0;i<Z;i++)
+	{
+		//글자가 최대 글자수를 넘는지 확인
+		if (encodedResult[i].length() > maxDigit)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
