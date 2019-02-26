@@ -1,15 +1,27 @@
 #include <iostream>
 #include <string>
+#include <math.h>
+#include <vector>
 
 using namespace std;
 
 int CheckDigit(int index,int pre);
 void FindDigitHafman(string encodingTotal, int original, int digit);
 bool CheckMakeSence();
+bool CheckIsTree();
+void PrintResult();
 
 int Z = 0, N = 0;
 int maxDigit = 0;
 string encodedResult[20];
+
+class Node {
+public:
+	int index;
+	string data;
+	vector<Node> leaf;
+	
+};
 
 int main()
 {
@@ -35,11 +47,18 @@ int main()
 
 		FindDigitHafman(encodingTotal, 0, 1);
 
+		PrintResult();
+
+		cout << "end\n";
+
 		/*
 		cout << FindDigitHafman(encodingTotal, 0, 1) << "\n";
 		cout << FindDigitHafman(encodingTotal, 1, 1) << "\n";
 		cout << FindDigitHafman(encodingTotal, 2, 1) << "\n";
 		*/
+
+
+
 	}
 
 
@@ -48,7 +67,7 @@ int main()
 
 int CheckDigit(int index, int pre)
 {
-	int next = pre + N^index;
+	int next = pre + (int)pow(N-1,index);
 	if (Z <= next)
 	{
 		return index;
@@ -66,20 +85,22 @@ int CheckDigit(int index, int pre)
 
 void FindDigitHafman(string encodingTotal, int original, int digit)
 {
+	bool isok = false;
+
 	if (original == Z - 1)
 	{
 		encodedResult[original] = encodingTotal;
-		
+		/*
 		for (int i = 0; i < Z; i++)
 		{
 			cout << encodedResult[i]<<", ";
 		}
 
 		cout << "\n";
+		*/
+ 		CheckMakeSence();
 
-		bool isok = CheckMakeSence();
-
-		cout << "Make Senece : " << isok << "\n";
+		//cout << "Make Senece : " << isok << "\n";
 
 		return;
 	}
@@ -104,6 +125,10 @@ void FindDigitHafman(string encodingTotal, int original, int digit)
 
 		FindDigitHafman(subEncoding, original + 1, 1);
 
+		if (isok)
+			return;
+
+
 		digit++;
 
 	}
@@ -114,14 +139,76 @@ bool CheckMakeSence()
 {
 	for(int i=0;i<Z;i++)
 	{
-		//글자가 최대 글자수를 넘는지 확인
-		if (encodedResult[i].length() > maxDigit)
+		//글자가 최대 글자수를 넘거나 없는지 확인
+		if (encodedResult[i].length() > maxDigit || encodedResult[i].length() == 0)
 		{
 			return false;
 		}
+
+		/*
+		//트리를 형성할수 있는지 확인
+		for (int j = 0; j < Z; j++)
+		{
+			if (i == j || encodedResult[i].length() > encodedResult[j].length())
+				continue;
+
+			string targetSub = encodedResult[j].substr(0, encodedResult[j].length());
+
+
+			//i가 j번째 문자열에 포함되는 형태이면 트리 생성이 불가능 하다
+			if (targetSub == encodedResult[j])
+				return false;z
+
+		}
+		*/
+
+
 	}
 
+	CheckIsTree();
+
 	return true;
+}
+
+bool CheckIsTree()
+{
+	Node root;
+	cout << "Checking Tree\n";
+	for (int i = 0; i < Z; i++)
+	{
+		Node* targetNode = &root;
+
+		cout << encodedResult[i] << endl;
+		for (int j = 0; j < encodedResult[i].length(); j++)
+		{
+			int digitNumber = (int)encodedResult[i][j]-48;
+			cout << digitNumber << endl;
+
+			if (targetNode->leaf.size() == 0)
+			{
+				targetNode->leaf.resize(N);
+			}
+
+			targetNode = &targetNode->leaf[digitNumber];
+			
+			
+
+		}
+		
+
+	}
+
+
+	return false;
+}
+
+void PrintResult()
+{
+	for (int i = 0; i < Z; i++)
+	{
+		cout << i << "->" << encodedResult[i] << "\n";
+
+	}
 }
 
 
