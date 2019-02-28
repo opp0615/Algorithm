@@ -1,4 +1,4 @@
 ﻿  maincpp.cpp
-d:\sources\algorithm\baeckjoon\7904\7904\maincpp.cpp(143): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
-d:\sources\algorithm\baeckjoon\7904\7904\maincpp.cpp(180): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\sources\algorithm\baeckjoon\7904\7904\maincpp.cpp(148): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+d:\sources\algorithm\baeckjoon\7904\7904\maincpp.cpp(189): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   7904.vcxproj -> D:\sources\Algorithm\BaeckJoon\7904\Debug\7904.exe

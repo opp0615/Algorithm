@@ -6,7 +6,7 @@
 using namespace std;
 
 int CheckDigit(int index,int pre);
-void FindDigitHafman(string encodingTotal, int original, int digit);
+bool FindDigitHafman(string encodingTotal, int original, int digit);
 bool CheckMakeSence();
 bool CheckIsTree();
 void PrintResult();
@@ -40,6 +40,7 @@ int main()
 		//최대 글자 수
 		maxDigit = CheckDigit(1 ,1);
 
+		//cout << "max : " << maxDigit << endl;
 
 		string encodingTotal ;
 
@@ -47,9 +48,8 @@ int main()
 
 		FindDigitHafman(encodingTotal, 0, 1);
 
-		PrintResult();
 
-		cout << "end\n";
+		//cout << "end\n";
 
 		/*
 		cout << FindDigitHafman(encodingTotal, 0, 1) << "\n";
@@ -83,7 +83,7 @@ int CheckDigit(int index, int pre)
 
 }
 
-void FindDigitHafman(string encodingTotal, int original, int digit)
+bool FindDigitHafman(string encodingTotal, int original, int digit)
 {
 	bool isok = false;
 
@@ -98,11 +98,14 @@ void FindDigitHafman(string encodingTotal, int original, int digit)
 
 		cout << "\n";
 		*/
- 		CheckMakeSence();
+
+		isok = CheckMakeSence();
+		if(isok)
+			PrintResult();
 
 		//cout << "Make Senece : " << isok << "\n";
 
-		return;
+		return isok;
 	}
 
 
@@ -123,15 +126,17 @@ void FindDigitHafman(string encodingTotal, int original, int digit)
 		string subEncoding = encodingTotal.substr(digit, encodingTotal.length() - digit);
 
 
-		FindDigitHafman(subEncoding, original + 1, 1);
+		isok = FindDigitHafman(subEncoding, original + 1, 1);
 
 		if (isok)
-			return;
+			return true;
 
 
 		digit++;
 
 	}
+
+	return false;
 
 }
 
@@ -146,7 +151,7 @@ bool CheckMakeSence()
 		}
 
 		/*
-		//트리를 형성할수 있는지 확인
+
 		for (int j = 0; j < Z; j++)
 		{
 			if (i == j || encodedResult[i].length() > encodedResult[j].length())
@@ -164,42 +169,71 @@ bool CheckMakeSence()
 
 
 	}
+	//트리를 형성할수 있는지 확인
+	return CheckIsTree();
 
-	CheckIsTree();
-
-	return true;
 }
 
 bool CheckIsTree()
 {
 	Node root;
-	cout << "Checking Tree\n";
+	root.leaf.resize(N);
+	int totalCount = 0;
+	//cout << "Checking Tree\n";
 	for (int i = 0; i < Z; i++)
 	{
 		Node* targetNode = &root;
+		bool isLeefAdded = false;
 
-		cout << encodedResult[i] << endl;
+		//cout << encodedResult[i] << endl;
 		for (int j = 0; j < encodedResult[i].length(); j++)
 		{
 			int digitNumber = (int)encodedResult[i][j]-48;
-			cout << digitNumber << endl;
+			//cout << digitNumber << endl;
 
 			if (targetNode->leaf.size() == 0)
 			{
+				//리프를 추가하려는데 이미 데이터가 노드에 존재함
+				if (targetNode->data != "")
+				{
+					//cout << "리프를 추가하려는데 이미 데이터가 노드에 존재함" << endl;
+					return false;
+				}
+				isLeefAdded = true;
 				targetNode->leaf.resize(N);
 			}
 
 			targetNode = &targetNode->leaf[digitNumber];
 			
-			
-
 		}
+
+		//데이터를 넣으려는데 하위노드에 값이 있음
+		if (targetNode->leaf.size() != 0)
+		{
+			//cout << "데이터를 넣으려는데 하위노드에 값이 있음" << endl;
+			return false;
+		}
+
+		//데이터를 넣는 프로세스
+		targetNode->index = i;
+		targetNode->data = encodedResult[i];
+
 		
+		if (!isLeefAdded) //리프를 추가한게 아니라 데이터를 넣기만 함
+			totalCount++;
+		else  //리프가 추가됨
+			totalCount += N-1;
 
 	}
 
+	if (totalCount != Z)
+	{
+		//cout << "노드의 개수가 Z와 같지않음" << endl;
+		return false;
+	}
 
-	return false;
+
+	return true;
 }
 
 void PrintResult()
