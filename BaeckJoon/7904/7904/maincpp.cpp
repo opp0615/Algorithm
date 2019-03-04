@@ -98,7 +98,7 @@ bool FindDigitHafman(string encodingTotal, int original, int digit)
 
 		cout << "\n";
 		*/
-
+		//PrintResult();
 		isok = CheckMakeSence();
 		if(isok)
 			PrintResult();
@@ -178,7 +178,7 @@ bool CheckIsTree()
 {
 	Node root;
 	root.leaf.resize(N);
-	int totalCount = 0;
+	int totalCount = N;
 	//cout << "Checking Tree\n";
 	for (int i = 0; i < Z; i++)
 	{
@@ -201,6 +201,8 @@ bool CheckIsTree()
 				}
 				isLeefAdded = true;
 				targetNode->leaf.resize(N);
+				//리프를 추가 됨
+				totalCount += N - 1;
 			}
 
 			targetNode = &targetNode->leaf[digitNumber];
@@ -218,11 +220,6 @@ bool CheckIsTree()
 		targetNode->index = i;
 		targetNode->data = encodedResult[i];
 
-		
-		if (!isLeefAdded) //리프를 추가한게 아니라 데이터를 넣기만 함
-			totalCount++;
-		else  //리프가 추가됨
-			totalCount += N-1;
 
 	}
 
