@@ -99,7 +99,11 @@ bool FindDigitHafman(string encodingTotal, int original, int digit)
 		cout << "\n";
 		*/
 		//PrintResult();
-		isok = CheckMakeSence();
+
+		if (encodingTotal.length() > maxDigit || encodingTotal.length() == 0)
+			return false;
+
+		isok = CheckIsTree();
 		if(isok)
 			PrintResult();
 
@@ -124,13 +128,11 @@ bool FindDigitHafman(string encodingTotal, int original, int digit)
 
 		//나머지 문자열
 		string subEncoding = encodingTotal.substr(digit, encodingTotal.length() - digit);
-
-
+		
 		isok = FindDigitHafman(subEncoding, original + 1, 1);
 
 		if (isok)
 			return true;
-
 
 		digit++;
 
@@ -142,6 +144,7 @@ bool FindDigitHafman(string encodingTotal, int original, int digit)
 
 bool CheckMakeSence()
 {
+
 	for(int i=0;i<Z;i++)
 	{
 		//글자가 최대 글자수를 넘거나 없는지 확인
@@ -149,23 +152,6 @@ bool CheckMakeSence()
 		{
 			return false;
 		}
-
-		/*
-
-		for (int j = 0; j < Z; j++)
-		{
-			if (i == j || encodedResult[i].length() > encodedResult[j].length())
-				continue;
-
-			string targetSub = encodedResult[j].substr(0, encodedResult[j].length());
-
-
-			//i가 j번째 문자열에 포함되는 형태이면 트리 생성이 불가능 하다
-			if (targetSub == encodedResult[j])
-				return false;z
-
-		}
-		*/
 
 
 	}
