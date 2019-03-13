@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -8,28 +9,45 @@ int main()
 	int arr[500] = { 0 };
 	cin >> N >> K;
 
-	int sum = 0;
-
 	for(int i = 0; i < N; i++)
 	{
 		cin >> arr[i];
-		sum += arr[i];
 	}
 
-	double m = sum / N;
-	
-	double sumXminusM = 0;
-	for (int i = 0; i < N; i++)
+	double minStdDev = 99999;
+
+	for (int i = 0; i < N - K + 1; i++)
 	{
-		sumXminusM += (arr[i] - m)*(arr[i] - m);
-	}
-	double standardDev = (double)sumXminusM / N;
+		int m = 0;
+		//K°³ ¸¸Å­
+		for (int j = i; j < K+i; j++)
+		{
+			m += arr[j];
+		}
 
-	cout << sum << " , " << m << " , " << sumXminusM <<" , " << standardDev << endl;
+		double avg = (double)m / (double)K;
+		
+		
+		double stdDev = 0;
 
-	cout << "end" << endl;
+		for (int j = i; j < K+i; j++)
+		{
+			double arrMinusM = (double)arr[j] - (double)avg;
+			stdDev += arrMinusM * arrMinusM;
+		}
 
+		stdDev /= K;
+		stdDev = sqrt(stdDev);
+
+		if (stdDev < minStdDev)
+		{
+			minStdDev = stdDev;
+		}
 	
+	}
+	cout.precision(11);
+	cout << fixed << minStdDev << endl;
+
 
 	return 0;
 }
