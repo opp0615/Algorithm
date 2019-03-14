@@ -5,6 +5,7 @@ using namespace std;
 
 int main()
 {
+
 	int N = 0, K = 0;
 	int arr[500] = { 0 };
 	cin >> N >> K;
@@ -45,7 +46,7 @@ int main()
 		}
 	
 	}
-	cout.precision(11);
+	cout.precision(12);
 	cout << fixed << minStdDev << endl;
 
 
