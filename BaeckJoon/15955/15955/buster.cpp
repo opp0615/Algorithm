@@ -42,8 +42,15 @@ int main()
 		cin >> preIndex >> postIndex >> hp;
 		preIndex--;
 		postIndex--;
+
+		bool resultCheck = false;
 		
-		FindResult(preIndex, postIndex, hp);
+		resultCheck = FindResult(preIndex, postIndex, hp);
+
+		if (resultCheck)
+			cout << "YES" << endl;
+		else
+			cout << "NO" << endl;
 
 	}
 
@@ -75,8 +82,12 @@ bool CheckPreToNext(CheckPoint pre, CheckPoint next, int hp)
 
 }
 
+//시작노드에서 끝 노드까지 가는 길이 있는지 찾음
 bool FindResult(int startIndex, int endIndex, int hp)
 {
+	bool result = false;
+
+	//마지막 노드까지 왔으면 갈수 있는 것
 	if (startIndex == endIndex)
 		return true;
 
@@ -85,9 +96,21 @@ bool FindResult(int startIndex, int endIndex, int hp)
 
 	for (int i = 0; i < N; i++)
 	{
-		
+		//방문한 노드가 아니면 자식 노드로 넘어감
+		if (!isVisited[i]) 
+		{
+			bool isok = false;
+			isok = CheckPreToNext(checkpoint[startIndex], checkpoint[i], hp);
+
+			if (isok)
+			{
+				isVisited[i] = true;
+				result = FindResult(i, endIndex, hp);
+			}
+
+		}
 	}
 
 
-	return false;
+	return result;
 }
