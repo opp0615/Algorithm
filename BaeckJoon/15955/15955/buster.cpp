@@ -2,9 +2,7 @@
 #include <vector>
 #include <math.h>
 
-
 using namespace std;
-
 
 class CheckPoint {
 public:
@@ -12,18 +10,17 @@ public:
 	int y;
 };
 
-
 int N = 0, Q = 0;
-vector<CheckPoint> checkpoint;
-vector<bool> isVisited;
+bool pathExist = false;
 
 bool CheckPreToNext(CheckPoint pre, CheckPoint next, int hp);
-bool FindResult(int startIndex, int endIndex, int hp);
+bool FindResult(int startIndex, int endIndex, int hp, vector<CheckPoint> &checkpoint,  vector<char> isVisited);
+
 int main()
 {
 
+	vector<CheckPoint> checkpoint;
 	cin >> N >> Q;
-
 
 	for(int i=0;i<N;i++)
 	{
@@ -32,27 +29,31 @@ int main()
 		cin >> tempCheck.x >> tempCheck.y;
 
 		checkpoint.push_back(tempCheck);
-		isVisited.push_back(false);
 	}
 
 
 	for (int i = 0; i < Q; i++)
 	{
 		int preIndex = -1, postIndex = -1, hp = -1;
+
 		cin >> preIndex >> postIndex >> hp;
 		preIndex--;
 		postIndex--;
 
 		bool resultCheck = false;
-		
-		resultCheck = FindResult(preIndex, postIndex, hp);
 
-		if (resultCheck)
+		vector<char> isVisited(N);
+		pathExist = false;
+		FindResult(preIndex, postIndex, hp, checkpoint,isVisited);
+
+		if (pathExist)
 			cout << "YES" << endl;
 		else
 			cout << "NO" << endl;
 
 	}
+
+	checkpoint.clear();
 
 
 	return 0;
@@ -83,7 +84,7 @@ bool CheckPreToNext(CheckPoint pre, CheckPoint next, int hp)
 }
 
 //시작노드에서 끝 노드까지 가는 길이 있는지 찾음
-bool FindResult(int startIndex, int endIndex, int hp)
+bool FindResult(int startIndex, int endIndex, int hp, vector<CheckPoint> &checkpoint, vector<char> isVisited)
 {
 	bool result = false;
 
@@ -92,25 +93,27 @@ bool FindResult(int startIndex, int endIndex, int hp)
 		return true;
 
 	//방문한 체크포인트
-	isVisited[startIndex] = true;
+	isVisited[startIndex] = 1;
 
 	for (int i = 0; i < N; i++)
 	{
 		//방문한 노드가 아니면 자식 노드로 넘어감
-		if (!isVisited[i]) 
+		if (isVisited[i] == 0) 
 		{
 			bool isok = false;
 			isok = CheckPreToNext(checkpoint[startIndex], checkpoint[i], hp);
 
 			if (isok)
 			{
-				isVisited[i] = true;
-				result = FindResult(i, endIndex, hp);
+				result = FindResult(i, endIndex, hp, checkpoint,isVisited);
+				if (result)
+					pathExist = true;
 			}
 
 		}
 	}
 
+	isVisited.clear();
 
 	return result;
 }
