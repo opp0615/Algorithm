@@ -2,15 +2,15 @@
 #include <vector>
 using namespace std;
 
-
-Rect CheckLeft(vector<Rect> & totalRect, int index);
-Rect CheckRight(vector<Rect> & totalRect, int index);
-
 class Rect {
 public:
 	int width;
 	int height;
 };
+
+int CheckLeft(vector<Rect> & totalRect, int index);
+int CheckRight(vector<Rect> & totalRect, int index);
+
 
 int main()
 {
@@ -61,23 +61,83 @@ int main()
 		preY = postY;
 	}
 
-	for (int i= 0; i < totalRect.size; i++) 
-	{
-		Rect leftRect = CheckLeft(totalRect, i);
-		Rect rightRect = CheckRight(totalRect, i);
+	int maxSize = -99999;
 
+	for (int i= 0; i < totalRect.size(); i++) 
+	{
+		int thisSize = totalRect[i].width * totalRect[i].height;
+		int leftSize = CheckLeft(totalRect, i);
+		int rightSize = CheckRight(totalRect, i);
+		int thisSideSize = 0;
+
+		if (leftSize > rightSize)
+			thisSideSize = leftSize;
+		else
+			thisSideSize = rightSize;
+
+
+		int thisTotalSize = thisSize + thisSideSize;
+
+		if (thisTotalSize > maxSize)
+			maxSize = thisTotalSize;
 
 	}
+
+	cout << maxSize << endl;
 
 
 	return 0;
 }
 
 
-Rect CheckLeft(vector<Rect> & totalRect, int index) {
+int CheckLeft(vector<Rect> & totalRect, int index) {
 	
+	if (index-1 < 0)
+		return 0;
+
+	int maxSize = 0;
+	int totalWidth = 0;
+	int minHeight = totalRect[index].height;
+
+	for (int i = index-1; i >= 0; i--) 
+	{
+		totalWidth += totalRect[i].width;
+
+		if (totalRect[i].height < minHeight)
+			minHeight = totalRect[i].height;
+
+		int thisSize = totalWidth * minHeight;
+
+		if (maxSize < thisSize)
+			maxSize = thisSize;
+
+	}
+
+	return maxSize;
+
 }
 
-Rect CheckRight(vector<Rect> & totalRect, int index) {
+int CheckRight(vector<Rect> & totalRect, int index) {
 
+	if (index+1 > totalRect.size())
+		return 0;
+
+	int maxSize = 0;
+	int totalWidth = 0;
+	int minHeight = totalRect[index].height;
+
+	for (int i = index+1; i < totalRect.size(); i++)
+	{
+		totalWidth += totalRect[i].width;
+
+		if (totalRect[i].height < minHeight)
+			minHeight = totalRect[i].height;
+
+		int thisSize = totalWidth * minHeight;
+
+		if (maxSize < thisSize)
+			maxSize = thisSize;
+	}
+
+	return maxSize;
 }

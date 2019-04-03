@@ -1,2 +1,5 @@
 ﻿  prodo.cpp
+d:\sources\algorithm\baeckjoon\15958\15958\prodo.cpp(67): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+d:\sources\algorithm\baeckjoon\15958\15958\prodo.cpp(123): warning C4018: '>': signed 또는 unsigned가 일치하지 않습니다.
+d:\sources\algorithm\baeckjoon\15958\15958\prodo.cpp(130): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   15958.vcxproj -> D:\sources\Algorithm\BaeckJoon\15958\Debug\15958.exe
