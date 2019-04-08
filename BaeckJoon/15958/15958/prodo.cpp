@@ -159,6 +159,8 @@ public:
 
 int N = 0;
 Rect totalRect[500000];
+Rect leftRect[500000];
+Rect rightRect[500000];
 
 int CheckLeft(int index);
 int CheckRight(int index);
@@ -178,9 +180,6 @@ int main()
 	thisRect.width = 0; thisRect.height = 0;
 
 	int j = 0;
-
-	int rectMaxSize = -9999;
-	int rectMaxIndex = 0;
 
 	//사각형 만들기
 	for (int i = 0; i < N; i++) {
@@ -209,10 +208,6 @@ int main()
 
 		if (thisRect.width * thisRect.height != 0) {
 			totalRect[j]=thisRect;
-			if (thisRect.width*thisRect.height > rectMaxSize) {
-				rectMaxIndex = j;
-				rectMaxSize = thisRect.width*thisRect.height;
-			}
 
 			thisRect.width = 0; thisRect.height = 0;
 			j++;
