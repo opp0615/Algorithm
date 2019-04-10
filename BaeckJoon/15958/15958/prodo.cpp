@@ -1,4 +1,5 @@
 
+//왼쪽 최대 크기 오른쪽 최대크기를 구하는 알고리즘
 /*
 #include <iostream>
 #include <vector>
@@ -147,6 +148,7 @@ int CheckRight(vector<Rect> & totalRect, int index) {
 */
 
 
+//왼쪽 오른쪽의 최소 높이와 크기를 미리 저장하고 바로 값을 가져와 쓰는 알고리즘
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -159,8 +161,10 @@ public:
 
 int N = 0;
 Rect totalRect[500000];
-Rect leftRect[500000];
-Rect rightRect[500000];
+int leftMinIndex[500000];
+int leftMinSize[500000];
+int rightMinIndex[500000];
+int rightMinSize[500000];
 
 int CheckLeft(int index);
 int CheckRight(int index);
@@ -179,7 +183,7 @@ int main()
 	Rect thisRect;
 	thisRect.width = 0; thisRect.height = 0;
 
-	int j = 0;
+	int rectCount = 0;
 
 	//사각형 만들기
 	for (int i = 0; i < N; i++) {
@@ -207,10 +211,10 @@ int main()
 		}
 
 		if (thisRect.width * thisRect.height != 0) {
-			totalRect[j]=thisRect;
+			totalRect[rectCount]=thisRect;
 
 			thisRect.width = 0; thisRect.height = 0;
-			j++;
+			rectCount++;
 		}
 
 		preX = postX;
@@ -219,30 +223,59 @@ int main()
 
 	int maxSize = -99999;
 
-
-
-	
-	for (int i= 0; i < N; i++)
+	int minIndex = -1;
+	int minHeight = 9999;
+	int stackedWidth = 0;
+	//왼쪽 최소 인덱스, 최소높이로 정해지는 최대 크기 설정
+	for (int i= 0; i < rectCount; i++)
 	{
-		int thisSize = totalRect[i].width * totalRect[i].height;
-		int rightSize = CheckRight(i);
+		if (totalRect[i].height < minHeight) {
+			minIndex = i;
+			minHeight = totalRect[i].height;
+		}
 
-		int thisTotalSize = thisSize + rightSize;
-
-		if (thisTotalSize > maxSize)
-			maxSize = thisTotalSize;
+		stackedWidth += totalRect[i].width;
+		leftMinIndex[i] = minIndex;
+		leftMinSize[i] = stackedWidth * minHeight;
 
 	}
-	
-	for (int i = N - 1; i > 0; i--)
-	{
-		int thisSize = totalRect[i].width * totalRect[i].height;
-		int leftSize = CheckLeft(i);
 
-		int thisTotalSize = thisSize + leftSize;
+	minIndex = -1;
+	minHeight = 9999;
+	stackedWidth = 0;
+	//오른쪽 최소 인덱스,최소높이로 정해지는 최대 크기 설정
+	for (int i = rectCount-1; i >= 0; i--)
+	{
+		if (totalRect[i].height < minHeight) {
+			minIndex = i;
+			minHeight = totalRect[i].height;
+		}
+
+		stackedWidth += totalRect[i].width;
+		rightMinIndex[i] = minIndex;
+		rightMinSize[i] = stackedWidth * minHeight;
+
+	}
+
+
+	//최대 L 크기 판별
+	for (int i = 0; i < rectCount; i++)
+	{
+		int leftSize = CheckLeft(i);
+		int rightSize = CheckRight(i);
+		int thisSideSize = 0;
+
+		if (leftSize > rightSize)
+			thisSideSize = leftSize;
+		else
+			thisSideSize = rightSize;
+
+
+		int thisTotalSize = thisSize + thisSideSize;
 
 		if (thisTotalSize > maxSize)
 			maxSize = thisTotalSize;
+
 	}
 
 	
@@ -257,15 +290,18 @@ int main()
 
 int CheckLeft(int index) {
 
-	if (index-1 < 0)
-		return 0;
 
 	int maxSize = 0;
 	int totalWidth = 0;
 	int minHeight = totalRect[index].height;
 
-	for (int i = index-1; i >= 0; i--)
+	for (int i = index; i >= 0; i--)
 	{
+
+		if (leftMinIndex[i] == i) {
+			return leftMinSize[i];
+		}
+
 		totalWidth += totalRect[i].width;
 
 		if (totalRect[i].height < minHeight)
@@ -293,6 +329,10 @@ int CheckRight(int index) {
 
 	for (int i = index+1; i < N; i++)
 	{
+		if (rightMinIndex[i] == i) {
+			return rightMinSize[i];
+		}
+
 		totalWidth += totalRect[i].width;
 
 		if (totalRect[i].height < minHeight)
