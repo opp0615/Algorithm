@@ -13,6 +13,8 @@ public:
 	int workTime;
 };
 
+void WorkBatchProccess(vector<Job> jobs,int N, int finalDay);
+
 
 int main()
 {
@@ -26,6 +28,7 @@ int main()
 		int N = 0;
 		cin >> N;
 		vector<Job> jobs;
+		int finalDay = 0;
 
 		//작업 일수 받아오기
 		for (int j = 0; j < N; j++) {
@@ -39,14 +42,44 @@ int main()
 			jobTemp.workTime = wi;
 			jobs.push_back(jobTemp);
 
+			if (ei > finalDay)
+				finalDay = ei;
+
 		}
 
 
-		cout << "Cycle" << endl;
+		//배치 프로세스
+		WorkBatchProccess(jobs,N, finalDay);
+
 
 	}
 
 	return 0;
+}
+
+void WorkBatchProccess(vector<Job> jobs, int N, int finalDay)
+{
+	vector<int> workQueue;
+	
+
+	//1일부터 끝나는 날까지 진행
+	for (int day = 1; day < finalDay+1; day++) 
+	{
+
+		//시작날이 지금 날과 같은 경우에 작업 배치
+		for (int j = 0; j < N; j++)
+		{
+			if (jobs[j].start == day) 
+			{
+				cout << jobs[j].start << ", " << jobs[j].end << ", " << jobs[j].workTime << endl;
+				workQueue.push_back(j);
+			}
+				
+		}
+
+	}
+
+
 }
 
 /*
