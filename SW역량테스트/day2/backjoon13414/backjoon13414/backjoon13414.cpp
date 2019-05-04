@@ -10,6 +10,61 @@
 using namespace std;
 
 
+//ket value를 swap하여 정렬시킴 => Time Out
+int main()
+{
+	int K = 0;
+	int L = 0;
+
+	cin >> L >> K;
+
+	map<string, int> m;
+	vector<pair<int, string>> result;
+	map<int, string> sortMap;
+
+	for (int i = 0; i < K; i++)
+	{
+		string studentnubmer;
+		cin >> studentnubmer;
+
+		m[studentnubmer] = i;
+
+	}
+
+	//정렬을 위해 sortMap에 넣기
+	for (map<string, int>::iterator iter = m.begin(); iter != m.end(); iter++)
+	{
+		//cout << iter->first << ", " << iter->second << endl;
+		sortMap[iter->second] = iter->first;
+	}
+
+	//출력
+	int count = 0;
+	/*
+	for (map<int, string>::iterator iter = sortMap.begin(); iter != sortMap.end(); iter++)
+	{
+		if (count >= L)
+			break;
+		cout << iter->second << endl;
+		count++;
+	}
+	*/
+
+	for (int i = 0; i < K; i++)
+	{
+		if (count >= L)
+			break;
+		if (sortMap[i] != "")
+		{
+			cout << sortMap[i] << endl;
+			count++;
+		}
+	}
+
+}
+
+//map과 벡터의 정렬을 활용 => Timeout
+/*
 int main()
 {
 	int K = 0;
@@ -29,25 +84,32 @@ int main()
 
 	}
 
+
 	for (map<string, int>::iterator iter = m.begin(); iter != m.end(); iter++)
 	{
-		cout << iter->first << ", " << iter->second << endl;
+		//cout << iter->first << ", " << iter->second << endl;
 		result.push_back(make_pair(iter->second, iter->first));
 
 	}
 
+	//정렬
 	sort(result.begin(), result.end());
+
+	int count = 0;
 
 	for (vector<pair<int, string>>::iterator iter = result.begin(); iter != result.end(); iter++)
 	{
-		cout << iter->first << ", " << iter->second << endl;
+		//L번째 까지 출력
+		if (count >= L)
+			break;
+		cout <<iter->second << endl;
+		count++;
 	}
-
-	//sorting
-
 
 	
 }
+*/
+
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
 // 프로그램 디버그: <F5> 키 또는 [디버그] > [디버깅 시작] 메뉴
