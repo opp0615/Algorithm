@@ -1,0 +1,4 @@
+﻿  problem1.cpp
+C:\Users\cloto\Sources\Algorithm\SW역량테스트\day4\problem1\problem1\problem1.cpp(47): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\cloto\Sources\Algorithm\SW역량테스트\day4\problem1\problem1\problem1.cpp(51): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  problem1.vcxproj -> C:\Users\cloto\Sources\Algorithm\SW역량테스트\day4\problem1\Debug\problem1.exe
